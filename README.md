@@ -1,6 +1,11 @@
 # tatakAI
-The reference environment for AI free fight
 
-This repository provides carefully designed environments to train and evaluated close combat AI.
+_Solve violence first, then solve anything with violence.
 
-*Installation*
+The reference environment for AI free fight.
+
+This repository provides carefully designed environments to train and evaluate close combat AI.
+
+**Installation :**
+
+
