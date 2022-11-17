@@ -40,8 +40,7 @@ class FightingEnv(gym.Env):
         o1, o2 = self.get_observation()
         
         new_dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
-        r = new_dist - self.dist
-
+        r = self.dist - new_dist + self.data.body('torso').xpos[2]
         self.dist = new_dist
 
         if self.timeCount == 1000:
