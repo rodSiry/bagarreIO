@@ -14,6 +14,6 @@ mujoco
 
 Two 17-dof simulated humanoids must rekt each other according to the following principles : 
 
--Both agents can see the enemy state in addition of their own
--Rewards are distributed depending on 1) opponent body part : head gives the highest score and hands the lowest and 2) the contact force measured during impact.
--Note that we may add or modify rules progressively to avoid boring solutions
+1. Both agents can see the enemy state in addition of their own
+2. Rewards are distributed depending on 1) opponent body part : head gives the highest score and hands the lowest and 2) the contact force measured during impact.
+3. Note that we may add or modify rules progressively to avoid boring solutions
