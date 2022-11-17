@@ -13,4 +13,6 @@ mujoco
 ## Environment Description & Fighting rules
 
 Two 17-dof simulated humanoids must rekt each other : 
+
+
 Rewards are distributed depending on 1) opponent body part : head gives the highest score and hands the lowest and 2) the contact force measured during impact.
