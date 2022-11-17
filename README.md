@@ -7,7 +7,7 @@ _Solve violence first, then solve anything else with violence._
 ## Installation
 
 ### Dependencies
-gym\\
+gym,
 mujoco
 
 
