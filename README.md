@@ -1,4 +1,6 @@
-![miniature](http://github.com/rodSiry/bagarreIO/blob/main/miniature.jpg)
+<h1>
+  <a href="#"><img alt="banner" src="miniature.jpg" width="100%"/></a>
+</h1>
 
 # bagarre IO
 
