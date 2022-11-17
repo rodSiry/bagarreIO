@@ -8,11 +8,11 @@ import gym
          
 class FightingEnv(gym.Env):
     def __init__(self):
-        self.model = mj.MjModel.from_xml_path('assets/humanoids.xml')
+        self.model = mj.MjModel.from_xml_path('tatakAI/assets/humanoids.xml')
         self.data = mj.MjData(self.model)
 
         o1, o2 = self.get_observation()
-        self.n_actions = len(self.data.ctrl)
+        self.n_actions = len(self.data.ctrl) // 2 
         self.n_observations = len(o1) + len(o2)
         self.n_joints = len(self.data.qpos) // 2
 
@@ -46,7 +46,6 @@ class FightingEnv(gym.Env):
 
         if self.timeCount == 1000:
             end = 1
-        print(self.timeCount)
 
         return np.concatenate([o1, o2], 0), r, end, None
 
@@ -56,12 +55,12 @@ class FightingEnv(gym.Env):
         return obs1, obs2
 
     def reset(self):
-        self.model = mj.MjModel.from_xml_path('assets/humanoids.xml')
+        self.model = mj.MjModel.from_xml_path('tatakAI/assets/humanoids.xml')
         self.data = mj.MjData(self.model)
         self.timeCount = 0
         o1, o2 = self.get_observation()
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
-        return np.array(o1 + o2)
+        return torch.cat([o1, o2], 0)
 
     def render(self):
         if not self.render_init:
@@ -95,6 +94,7 @@ class FightingEnv(gym.Env):
         pass
 
 
+"""
 env = FightingEnv()
 env.reset()
 for _ in range(3000):
@@ -104,3 +104,4 @@ for _ in range(3000):
     env.render()
     if t:
         env.reset()
+"""
