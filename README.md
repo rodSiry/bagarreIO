@@ -4,7 +4,7 @@
 
 # bagarre IO
 
-_Solve violence first, then solve anything else with violence._
+_Solve violence, then solve anything else with violence._
 
 **bagarreIO** is a library that provides carefully designed environments to train and compare humanoid AI agents on the challenging task of **1v1 close combat**.
 
