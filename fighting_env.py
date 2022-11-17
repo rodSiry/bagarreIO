@@ -60,7 +60,7 @@ class FightingEnv(gym.Env):
         self.timeCount = 0
         o1, o2 = self.get_observation()
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
-        return torch.cat([o1, o2], 0)
+        return np.concatenate([o1, o2], 0)
 
     def render(self):
         if not self.render_init:
