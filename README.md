@@ -1,4 +1,4 @@
-![Drag Racing](http://github.com/rodSiry/bagarreIO/miniature.jpg)
+![miniature](http://github.com/rodSiry/bagarreIO/blob/main/miniature.jpg)
 
 # bagarre IO
 
