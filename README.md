@@ -7,8 +7,8 @@ _Solve violence first, then solve anything else with violence._
 ## Installation
 
 ### Dependencies
-gym,
-mujoco
+1. gym
+2. mujoco
 
 ## Environment Description & Fighting rules
 
