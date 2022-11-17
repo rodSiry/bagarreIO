@@ -1,5 +1,5 @@
 <h1>
-  <a href="#"><img alt="banner" src="miniature.jpg" width="100%"/></a>
+  <a href="#"><img alt="banner" src="miniature.jpg" width="10%"/></a>
 </h1>
 
 # bagarre IO
