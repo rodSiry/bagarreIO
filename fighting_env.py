@@ -84,7 +84,11 @@ class FightingEnv(gym.Env):
         #for visualisation
         p1_color = [0.5, 0.5, 1, 1]
         p2_color = [0.5, 1, 0.5, 1]
+<<<<<<< HEAD
         hit_color = [1, 0.5, 0.5, 1]
+=======
+        hit_color = [1, 0, 0, 1]
+>>>>>>> b6953c894d7451b40a60e26c55a67c78c8d76e7c
         
 
         #cumulated hit rewards
