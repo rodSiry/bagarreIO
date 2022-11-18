@@ -14,9 +14,9 @@ _Solve violence, then solve anything else with violence._
 1. gym
 2. mujoco
 
-'''
+```
 pip install .
-'''
+```
 
 ## Environment Description & Fighting rules
 
