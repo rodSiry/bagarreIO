@@ -25,4 +25,8 @@ Two 17-dof simulated humanoids must rekt each other according to the following p
 
 ## Trained Agents
 
+| Method | Author | snapshot |
+|:----|:---:   |:---:|
+|SAC + guidance loss | Rodrigue Siry | |
+
 ## Possible improvements
