@@ -14,6 +14,11 @@ _Solve violence, then solve anything else with violence._
 1. gym
 2. mujoco
 
+Simply run : 
+```
+pip install .
+```
+
 ## Environment Description & Fighting rules
 
 Two 17-dof simulated humanoids must rekt each other according to the following principles : 
@@ -26,7 +31,7 @@ Two 17-dof simulated humanoids must rekt each other according to the following p
 
 ## Trained Agents
 
-We provide a self-trained agent as baseline (run demo.py)
+We provide a self-trained agent as baseline.
 
 | Method | Author | snapshot |
 |:----|:---:   |:---:|
