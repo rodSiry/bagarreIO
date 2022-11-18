@@ -16,8 +16,7 @@ class FightingEnv(gym.Env):
         o1, o2 = self.get_observation()
         self.n_actions = len(self.data.ctrl) // 2 
         self.n_observations = len(o1) + len(o2)
-        self.n_joints = len(self.data.qpos) // 2
-
+        self.n_joints = len(self.data.qpos) // 2 
         self.action_space = gym.spaces.box.Box(
             low = -np.ones((self.n_actions)),
             high = np.ones((self.n_actions)))
@@ -84,15 +83,7 @@ class FightingEnv(gym.Env):
         #for visualisation
         p1_color = [0.5, 0.5, 1, 1]
         p2_color = [0.5, 1, 0.5, 1]
-<<<<<<< HEAD
         hit_color = [1, 0.5, 0.5, 1]
-=======
-        hit_color = [1, 0, 0, 1]
-<<<<<<< HEAD
-=======
->>>>>>> b6953c894d7451b40a60e26c55a67c78c8d76e7c
-        
->>>>>>> 89dc1a2b15f882df7fcc271f94bda59c1b607d35
 
         #cumulated hit rewards
         r1, r2 = 0, 0
