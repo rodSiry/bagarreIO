@@ -6,8 +6,10 @@ import random
 import numpy as np
 import gym
          
+# hit scale : scaling factor for punching reward
+
 class FightingEnv(gym.Env):
-    def __init__(self):
+    def __init__(self, hit_scale=0.001):
         self.model = mj.MjModel.from_xml_path('bagarreIO/assets/humanoids.xml')
         self.data = mj.MjData(self.model)
 
@@ -23,6 +25,8 @@ class FightingEnv(gym.Env):
         self.observation_space = gym.spaces.box.Box(
             low = -np.ones((self.n_observations)),
             high = np.ones((self.n_observations)))
+
+        self.hit_scale = hit_scale
 
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
         self.render_init = False
@@ -63,17 +67,40 @@ class FightingEnv(gym.Env):
 
         self.dist = new_dist
 
-        self.get_contacts()
+        rc1, rc2 = self.get_contacts_rewards()
 
         if self.timeCount == 1000:
             end = 1
 
         return np.concatenate([o1, o2], 0), r, end, None
 
-    def get_contacts(self):
-        if len(self.data.contact) > 0:
-            #print(self.data.geom(self.data.contact[0].geom1))
-            pass
+    def get_contacts_rewards(self):
+
+        #cumulated hit rewards
+        r1, r2 = 0, 0
+
+
+        #parse detected collisions
+        for k in range(len(self.data.contact)):
+
+            #if p1 hits p2
+            if (self.data.contact[k].geom1 in self.p1_hit and self.data.contact[k].geom2 in self.p1_targets) or (self.data.contact[k].geom2 in self.p1_hit and self.data.contact[k].geom1 in self.p1_targets):
+                force_index = self.data.contact[k].efc_address
+                if force_index >= 0:
+                    force = self.data.efc_force[force_index]
+                    r1 += force
+                    r2 -= force
+
+            #if p2 hits p1
+            if (self.data.contact[k].geom1 in self.p2_hit and self.data.contact[k].geom2 in self.p2_targets) or (self.data.contact[k].geom2 in self.p2_hit and self.data.contact[k].geom1 in self.p2_targets):
+                force_index = self.data.contact[k].efc_address
+                if force_index >= 0:
+                    force = self.data.efc_force[force_index]
+                    r2 += force
+                    r1 -= force
+
+        r1, r2 = r1 * self.hit_scale, r2 * self.hit_scale
+        return r1, r2
 
     def get_observation(self):
         obs1 = np.concatenate([self.data.qpos[:len(self.data.qpos)//2] , self.data.qvel[:len(self.data.qvel)//2], self.data.body('torso').xpos, self.data.body('torso').xquat], axis=0)
@@ -83,6 +110,7 @@ class FightingEnv(gym.Env):
     def reset(self):
         self.model = mj.MjModel.from_xml_path('bagarreIO/assets/humanoids.xml')
         self.data = mj.MjData(self.model)
+
         self.timeCount = 0
         o1, o2 = self.get_observation()
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
