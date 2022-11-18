@@ -112,7 +112,7 @@
     <geom name="wall4" size="4 0.1 2" type="box" material="wall" condim="3" pos="0 4 0"/>
 
     <light name="spotlight" mode="targetbodycom" target="torso" diffuse=".8 .8 .8" specular="0.3 0.3 0.3" pos="0 -6 4" cutoff="30"/>
-    <body name="torso" pos="2.8 0 1.282" childclass="body">
+    <body name="torso" pos="-3 0 1.282" childclass="body">
       <light name="top" pos="0 0 2" mode="trackcom"/>
       <camera name="back" pos="-3 0 1" xyaxes="0 -1 0 1 0 2" mode="trackcom"/>
       <camera name="side" pos="0 -3 1" xyaxes="1 0 0 0 1 2" mode="trackcom"/>
