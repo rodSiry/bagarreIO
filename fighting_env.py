@@ -64,8 +64,9 @@ class FightingEnv(gym.Env):
         
         #guiding reward for standing up and getting closer (optional, useful for training)
         new_dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
-        r = new_dist - self.dist
+        r = new_dist - self.dist + self.data.body('torso').xpos - self.z
         self.dist = new_dist
+        self.z = self.data.body('torso').xpos
 
         rc1, _ = self.get_contacts_rewards()
 
@@ -83,7 +84,7 @@ class FightingEnv(gym.Env):
         #for visualisation
         p1_color = [0.5, 0.5, 1, 1]
         p2_color = [0.5, 1, 0.5, 1]
-        hit_color = [1, 0, 0, 1]
+        hit_color = [1, 0.5, 0.5, 1]
         
 
         #cumulated hit rewards
@@ -144,6 +145,7 @@ class FightingEnv(gym.Env):
         self.timeCount = 0
         o1, o2 = self.get_observation()
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
+        self.z = self.data.body('torso').xpos
         return np.concatenate([o1, o2], 0)
 
     def render(self, cam_smoothness=0.99):
