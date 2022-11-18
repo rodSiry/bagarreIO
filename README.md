@@ -26,6 +26,8 @@ Two 17-dof simulated humanoids must rekt each other according to the following p
 
 ## Trained Agents
 
+We provide a self-trained agent as baseline (run demo.py)
+
 | Method | Author | snapshot |
 |:----|:---:   |:---:|
 |SAC self-play w/ guidance loss | Rodrigue Siry | |
