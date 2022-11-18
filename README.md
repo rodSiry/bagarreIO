@@ -2,11 +2,11 @@
   <a href="#"><img alt="banner" src="miniature.jpg" width="30%"/></a> <a href="#"><img alt="banner" src="example_env.gif" width="60%"/></a>
 </h1>
 
-# bagarre IO
+# bagarre io
 
 _Solve violence, then solve anything else with violence._
 
-**bagarreIO** is a library that provides carefully designed environments to train and compare humanoid AI agents on the challenging task of **1v1 close combat**.
+**bagarreio** is a library that provides carefully designed environments to train and compare humanoid AI agents on the challenging task of **1v1 close combat**.
 
 ## Installation
 
