@@ -18,9 +18,9 @@ _Solve violence, then solve anything else with violence._
 
 Two 17-dof simulated humanoids must rekt each other according to the following principles : 
 
-1. Like in chess, each agent has acces to the whole scene state
+1. Like in chess, each agent has access to the whole scene state
 2. Agents can strike any body part of the opponent but only with hands and feet.
-3. Rewards are distributed depending on 1) striked opponent body part : head typically gives the highest score and hands the lowest and 2) the contact force measured during impact.
+3. "Hit-points" are distributed depending on 1) striked opponent body part : head typically gives the highest score while hands gives the lowest and 2) contact force measured during impact. The agent with the most hit-points at the end of the episode wins the match.
 4. Standing up is not enforced
 5. Note that we may add or modify rules progressively to avoid boring solutions or simulation exploits
 
@@ -31,3 +31,5 @@ Two 17-dof simulated humanoids must rekt each other according to the following p
 |SAC self-play w/ guidance loss | Rodrigue Siry | |
 
 ## Possible improvements
+
+Add a notion of stamina
