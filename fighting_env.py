@@ -62,12 +62,14 @@ class FightingEnv(gym.Env):
 
         o1, o2 = self.get_observation()
         
+        #guiding reward for standing up and getting closer (optional, useful for training)
         new_dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
         r = new_dist - self.dist
-
         self.dist = new_dist
 
-        rc1, rc2 = self.get_contacts_rewards()
+        rc1, _ = self.get_contacts_rewards()
+
+        r += rc1
 
         if self.timeCount == 1000:
             end = 1
@@ -75,10 +77,11 @@ class FightingEnv(gym.Env):
         return np.concatenate([o1, o2], 0), r, end, None
 
     def get_contacts_rewards(self):
+        
+        #TODO : add body parts score multiplier
 
         #cumulated hit rewards
         r1, r2 = 0, 0
-
 
         #parse detected collisions
         for k in range(len(self.data.contact)):
