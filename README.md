@@ -32,4 +32,4 @@ Two 17-dof simulated humanoids must rekt each other according to the following p
 
 ## Possible improvements
 
-Add a notion of stamina
+Simulate stamina / muscular fatigue
