@@ -5,12 +5,18 @@ import pybullet_data
 import random
 import numpy as np
 import gym
+import os, inspect
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+os.sys.path.insert(0, parentdir)
          
 # hit scale : scaling factor for punching reward
 
 class FightingEnv(gym.Env):
-    def __init__(self, hit_scale=0.001):
-        self.model = mj.MjModel.from_xml_path('bagarreIO/assets/humanoids.xml')
+    def __init__(self, hit_scale=0.001, filepath='assets/humanoids.xml'):
+        self.filepath = filepath
+        self.model = mj.MjModel.from_xml_path(os.path.join(parentdir, filepath))
         self.data = mj.MjData(self.model)
 
         o1, o2 = self.get_observation()
@@ -137,7 +143,7 @@ class FightingEnv(gym.Env):
         return obs1, obs2
 
     def reset(self):
-        self.model = mj.MjModel.from_xml_path('bagarreIO/assets/humanoids.xml')
+        self.model = mj.MjModel.from_xml_path(os.path.join(parentdir, self.filepath))
         self.data = mj.MjData(self.model)
 
         self.timeCount = 0
