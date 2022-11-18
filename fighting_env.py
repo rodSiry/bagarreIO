@@ -77,14 +77,29 @@ class FightingEnv(gym.Env):
         return np.concatenate([o1, o2], 0), r, end, None
 
     def get_contacts_rewards(self):
-        
+
         #TODO : add body parts score multiplier
+
+        #for visualisation
+        p1_color = [0.5, 0.5, 1, 1]
+        p2_color = [0.5, 1, 0.5, 1]
+        hit_color = [1, 0, 0, 1]
+        
 
         #cumulated hit rewards
         r1, r2 = 0, 0
 
+        #default color of p2
+        for k in self.p1_targets:
+            self.model.geom_rgba[k] = np.array(p2_color)
+
+        #default color of p1
+        for k in self.p2_targets:
+            self.model.geom_rgba[k] = np.array(p1_color)
+
         #parse detected collisions
         for k in range(len(self.data.contact)):
+
 
             #if p1 hits p2
             if (self.data.contact[k].geom1 in self.p1_hit and self.data.contact[k].geom2 in self.p1_targets) or (self.data.contact[k].geom2 in self.p1_hit and self.data.contact[k].geom1 in self.p1_targets):
@@ -94,6 +109,12 @@ class FightingEnv(gym.Env):
                     r1 += force
                     r2 -= force
 
+                #hit parts are colored in red for clarity
+                self.model.geom_rgba[self.data.contact[k].geom1] = np.array(hit_color)
+                self.model.geom_rgba[self.data.contact[k].geom2] = np.array(hit_color)
+
+
+
             #if p2 hits p1
             if (self.data.contact[k].geom1 in self.p2_hit and self.data.contact[k].geom2 in self.p2_targets) or (self.data.contact[k].geom2 in self.p2_hit and self.data.contact[k].geom1 in self.p2_targets):
                 force_index = self.data.contact[k].efc_address
@@ -101,6 +122,12 @@ class FightingEnv(gym.Env):
                     force = self.data.efc_force[force_index]
                     r2 += force
                     r1 -= force
+
+                #hit parts are colored in red for clarity
+                self.model.geom_rgba[self.data.contact[k].geom1] = np.array(hit_color)
+                self.model.geom_rgba[self.data.contact[k].geom2] = np.array(hit_color)
+
+
 
         r1, r2 = r1 * self.hit_scale, r2 * self.hit_scale
         return r1, r2
