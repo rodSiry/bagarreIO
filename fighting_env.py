@@ -8,7 +8,7 @@ import gym
          
 class FightingEnv(gym.Env):
     def __init__(self):
-        self.model = mj.MjModel.from_xml_path('tatakAI/assets/humanoids.xml')
+        self.model = mj.MjModel.from_xml_path('bagarreIO/assets/humanoids.xml')
         self.data = mj.MjData(self.model)
 
         o1, o2 = self.get_observation()
@@ -27,6 +27,25 @@ class FightingEnv(gym.Env):
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
         self.render_init = False
 
+        #legal player1 hitting parts
+        p1_hit = ['hand_left', 'hand_right', 'foot1_left', 'foot2_left', 'foot1_right', 'foot2_right']
+        self.p1_hit = [self.data.geom(p).id for p in p1_hit]
+
+        #legal player2 hitting parts
+        p2_hit = ['2hand_left', '2hand_right', '2foot1_left', '2foot2_left', '2foot1_right', '2foot2_right']
+        self.p2_hit = [self.data.geom(p).id for p in p2_hit]
+
+        #legal player1 target parts
+        p1_targets = ['2torso', '2head', '2butt', '2waist_upper', '2waist_lower', '2foot1_right', '2foot2_right', '2foot1_left', '2foot2_left', '2upper_arm_right', '2upper_arm_left', '2lower_arm_right', '2lower_arm_left', '2hand_left', '2hand_right', '2shin_left', '2shin_right', '2thigh_left', '2thigh_right']
+        self.p1_targets = [self.data.geom(p).id for p in p1_targets]
+
+        #legal player2 target parts
+        p2_targets = ['torso', 'head', 'butt', 'waist_upper', 'waist_lower', 'foot1_right', 'foot2_right', 'foot1_left', 'foot2_left', 'upper_arm_right', 'upper_arm_left', 'lower_arm_right', 'lower_arm_left', 'hand_left', 'hand_right', 'shin_left', 'shin_right', 'thigh_left', 'thigh_right']
+        self.p2_targets = [self.data.geom(p).id for p in p2_targets]
+
+        #non-target parts
+        ['wall1', 'wall2', 'wall3', 'wall4', 'floor']
+
     def step(self, action1, action2):
         self.timeCount += 1
         end = 0
@@ -44,10 +63,17 @@ class FightingEnv(gym.Env):
 
         self.dist = new_dist
 
+        self.get_contacts()
+
         if self.timeCount == 1000:
             end = 1
 
         return np.concatenate([o1, o2], 0), r, end, None
+
+    def get_contacts(self):
+        if len(self.data.contact) > 0:
+            #print(self.data.geom(self.data.contact[0].geom1))
+            pass
 
     def get_observation(self):
         obs1 = np.concatenate([self.data.qpos[:len(self.data.qpos)//2] , self.data.qvel[:len(self.data.qvel)//2], self.data.body('torso').xpos, self.data.body('torso').xquat], axis=0)
@@ -55,7 +81,7 @@ class FightingEnv(gym.Env):
         return obs1, obs2
 
     def reset(self):
-        self.model = mj.MjModel.from_xml_path('tatakAI/assets/humanoids.xml')
+        self.model = mj.MjModel.from_xml_path('bagarreIO/assets/humanoids.xml')
         self.data = mj.MjData(self.model)
         self.timeCount = 0
         o1, o2 = self.get_observation()
