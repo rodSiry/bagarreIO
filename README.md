@@ -28,6 +28,6 @@ Two 17-dof simulated humanoids must rekt each other according to the following p
 
 | Method | Author | snapshot |
 |:----|:---:   |:---:|
-|SAC + guidance loss | Rodrigue Siry | |
+|SAC self-play w/ guidance loss | Rodrigue Siry | |
 
 ## Possible improvements
