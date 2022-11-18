@@ -40,7 +40,8 @@ class FightingEnv(gym.Env):
         o1, o2 = self.get_observation()
         
         new_dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
-        r = self.dist - new_dist + self.data.body('torso').xpos[2]
+        r = new_dist - self.dist
+
         self.dist = new_dist
 
         if self.timeCount == 1000:
@@ -71,15 +72,17 @@ class FightingEnv(gym.Env):
             mj.glfw.glfw.swap_interval(1)
             mj.mjv_defaultCamera(self.cam)
             mj.mjv_defaultOption(self.opt)
-            self.cam.distance = 10
-            self.cam.lookat[0] = 0
-            self.cam.lookat[1] = 0
-            self.cam.lookat[2] = 0
             self.scene = mj.MjvScene(self.model, maxgeom=10000)
             self.context = mj.MjrContext(self.model, mj.mjtFontScale.mjFONTSCALE_100)
 
             self.render_init = True
 
+        poi = (self.data.body('torso').xpos + self.data.body('2torso').xpos) * .5
+        inter_distance = (((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2).sum()) ** 0.5
+        self.cam.distance = max(10 + 0.1 * (inter_distance - 6), 2)
+
+        poi[2] = 0
+        self.cam.lookat = self.cam.lookat * 0.99 + 0.01 * poi
         self.viewport = mj.MjrRect(0, 0, 1200, 900)
         mj.mjv_updateScene(self.model, self.data, self.opt, None, self.cam, mj.mjtCatBit.mjCAT_ALL.value, self.scene)
         mj.mjr_render(self.viewport, self.scene, self.context)

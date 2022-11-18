@@ -26,10 +26,13 @@
 
   <asset>
     <texture type="skybox" builtin="gradient" rgb1=".3 .5 .7" rgb2="0 0 0" width="32" height="512"/>
-    <texture name="body" type="cube" builtin="flat" mark="cross" width="127" height="1278" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
-    <material name="body" texture="body" texuniform="true" rgba="0.8 0.6 .4 1"/>
-    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
-    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
+    <texture name="body" type="cube" builtin="flat" width="127" height="1278" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+    <material name="body" texture="body" texuniform="true" rgba="0.8 0.6 0.4 1"/>
+    <texture name="wall" type="cube" builtin="flat" width="127" height="1278" rgb1="0.4 0.6 0.4" rgb2="0.4 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+    <material name="wall" texture="wall" texuniform="true" rgba="0.8 0.6 0.4 1"/>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".2 .2 .2" rgb2=".3 .3 .3"/>
+    <!--<texture name="grid" type="2d" file="pierre.png" width="256" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>-->
+    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance="0.2"/>
   </asset>
 
   <default>
@@ -103,6 +106,11 @@
 
   <worldbody>
     <geom name="floor" size="0 0 .05" type="plane" material="grid" condim="3"/>
+    <geom name="wall1" size="0.1 4 2" type="box" material="wall" condim="3" pos="-4 0 0"/>
+    <geom name="wall2" size="0.1 4 2" type="box" material="wall" condim="3" pos="4 0 0"/>
+    <geom name="wall3" size="4 0.1 2" type="box" material="wall" condim="3" pos="0 -4 0"/>
+    <geom name="wall4" size="4 0.1 2" type="box" material="wall" condim="3" pos="0 4 0"/>
+
     <light name="spotlight" mode="targetbodycom" target="torso" diffuse=".8 .8 .8" specular="0.3 0.3 0.3" pos="0 -6 4" cutoff="30"/>
     <body name="torso" pos="-3 0 1.282" childclass="body">
       <light name="top" pos="0 0 2" mode="trackcom"/>
@@ -223,14 +231,14 @@
     <motor name="elbow_left"      gear="40"  joint="elbow_left"/>
   </actuator>
 
-  <worldbody>
+  <worldbody >
     <light name="2spotlight" mode="targetbodycom" target="2torso" diffuse=".8 .8 .8" specular="0.3 0.3 0.3" pos="0 -6 4" cutoff="30"/>
-    <body name="2torso" pos="3 0 1.282" childclass="body">
+    <body name="2torso" pos="3 0 1.282" childclass="body" euler="0 0 180">
       <light name="2top" pos="0 0 2" mode="trackcom"/>
       <camera name="2back" pos="-3 0 1" xyaxes="0 -1 0 1 0 2" mode="trackcom"/>
       <camera name="2side" pos="0 -3 1" xyaxes="1 0 0 0 1 2" mode="trackcom"/>
       <freejoint name="2root"/>
-      <geom name="2torso" fromto="0 -.07 0 0 .07 0" size=".07"/>
+      <geom name="2torso" fromto="0 -.07 0 0 .07 0" size=".07" />
       <geom name="2waist_upper" fromto="-.01 -.06 -.12 -.01 .06 -.12" size=".06"/>
       <body name="2head" pos="0 0 .19">
         <geom name="2head" type="sphere" size=".09"/>
