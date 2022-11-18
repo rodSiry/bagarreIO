@@ -119,7 +119,7 @@ class FightingEnv(gym.Env):
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
         return np.concatenate([o1, o2], 0)
 
-    def render(self):
+    def render(self, cam_smoothness=0.99):
         if not self.render_init:
             self.cam = mj.MjvCamera()
             self.opt = mj.MjvOption()
@@ -133,13 +133,16 @@ class FightingEnv(gym.Env):
             self.context = mj.MjrContext(self.model, mj.mjtFontScale.mjFONTSCALE_100)
 
             self.render_init = True
+            self.cam.distance = 10
 
         poi = (self.data.body('torso').xpos + self.data.body('2torso').xpos) * .5
         inter_distance = (((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2).sum()) ** 0.5
-        self.cam.distance = max(10 + 0.1 * (inter_distance - 6), 2)
-
+        cam_distance_target = max(10 + 1. * (inter_distance - 6), 2)
         poi[2] = 0
-        self.cam.lookat = self.cam.lookat * 0.99 + 0.01 * poi
+        self.cam.lookat = self.cam.lookat * cam_smoothness + (1 - cam_smoothness) * poi
+        self.cam.distance = self.cam.distance * cam_smoothness + (1 - cam_smoothness) * cam_distance_target
+
+
         self.viewport = mj.MjrRect(0, 0, 1200, 900)
         mj.mjv_updateScene(self.model, self.data, self.opt, None, self.cam, mj.mjtCatBit.mjCAT_ALL.value, self.scene)
         mj.mjr_render(self.viewport, self.scene, self.context)
