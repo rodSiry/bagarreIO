@@ -69,7 +69,8 @@ class FightingEnv(gym.Env):
         
         #guiding reward for standing up and getting closer (optional, useful for training)
         new_dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
-        r = new_dist - self.dist + self.data.body('torso').xpos[2] - self.z
+        r = self.dist - new_dist
+        #r = self.data.body('torso').xpos[2] - self.z
         self.dist = new_dist
         self.z = self.data.body('torso').xpos[2]
 
