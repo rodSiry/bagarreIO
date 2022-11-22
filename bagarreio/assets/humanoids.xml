@@ -28,10 +28,12 @@
     <texture type="skybox" builtin="gradient" rgb1=".3 .5 .7" rgb2="0 0 0" width="32" height="512"/>
     <texture name="body" type="cube" builtin="flat" width="127" height="1278" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
     <material name="body" texture="body" texuniform="true" rgba="0.8 0.6 0.4 1"/>
-    <texture name="wall" type="cube" builtin="flat" width="127" height="1278" rgb1="0.4 0.4 0.4" rgb2="0.4 0.4 0.4" markrgb="1 1 1" random="0.01"/>
+    <texture name="wall" type="cube" builtin="flat" width="127" height="1278" rgb1="0.3 0.3 0.3" rgb2="0.3 0.3 0.3" markrgb="1 1 1" random="0.01"/>
+
     <material name="wall" texture="wall" texuniform="true"/>
-    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".2 .2 .2" rgb2=".3 .3 .3"/>
-    <!--<texture name="grid" type="2d" file="pierre.png" width="256" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>-->
+
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".2 .2 .4" rgb2=".3 .3 .4"/>
+    <!--<texture name="grid" type="2d" file="logos.png" width="256" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>-->
     <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance="0.2"/>
   </asset>
 
@@ -65,6 +67,11 @@
       <default class="hand">
         <geom type="sphere" size=".04"/>
       </default>
+      <default class="octo_wall">
+	<geom size="0.05 1.7 2" type="box" material="wall" condim="3" pos="-4 0 0"/>
+      </default>
+
+
 
       <!-- joints -->
       <joint type="hinge" damping=".2" stiffness="1" armature=".01" limited="true" solimplimit="0 .99 .01"/>
@@ -107,10 +114,16 @@
   <worldbody>
     <light name="light" mode="fixed" target="torso" directional="true" diffuse="1. 1. 1." specular="0.3 0.3 0.3" pos="0 -6 4" cutoff="30"/>
     <geom name="floor" size="0 0 .05" type="plane" material="grid" condim="3"/>
-    <geom name="wall1" size="0.1 4 2" type="box" material="wall" condim="3" pos="-4 0 0"/>
-    <geom name="wall2" size="0.1 4 2" type="box" material="wall" condim="3" pos="4 0 0"/>
-    <geom name="wall3" size="4 0.1 2" type="box" material="wall" condim="3" pos="0 -4 0"/>
-    <geom name="wall4" size="4 0.1 2" type="box" material="wall" condim="3" pos="0 4 0"/>
+
+    <geom name="wall1" class="octo_wall" pos="-4 0 0"/>
+    <geom name="wall2" class="octo_wall" pos="4 0 0"/>
+    <geom name="wall3" class="octo_wall" pos="0 4 0" euler="0 0  90"/>
+    <geom name="wall4" class="octo_wall" pos="0 -4 0" euler="0 0 -90"/>
+
+    <geom name="wall5" class="octo_wall" pos="2.82 2.82 0" euler="0 0 45"/>
+    <geom name="wall6" class="octo_wall" pos="2.82 -2.82 0" euler="0 0 -45"/>
+    <geom name="wall7" class="octo_wall" pos="-2.82 2.82 0" euler="0 0 135"/>
+    <geom name="wall8" class="octo_wall" pos="-2.82 -2.82 0" euler="0 0 45"/>
 
     <body name="torso" pos="-3 0 1.282" childclass="body">
       <camera name="back" pos="-3 0 1" xyaxes="0 -1 0 1 0 2" mode="trackcom"/>

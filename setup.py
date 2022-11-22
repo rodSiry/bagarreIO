@@ -30,5 +30,5 @@ setup(name=PACKAGE_NAME,
       url=URL,
       install_requires=INSTALL_REQUIRES,
       packages=find_packages(),
-      package_data={'bagarreio': ['assets/humanoids.xml']},
+      package_data={'bagarreio': ['assets/humanoids.xml', 'assets/logos.png']},
       )

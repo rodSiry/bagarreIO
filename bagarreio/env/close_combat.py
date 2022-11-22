@@ -74,7 +74,6 @@ class FightingEnv(gym.Env):
         self.dist = new_dist
         self.z = self.data.body('torso').xpos[2]
 
-
         rc1, _ = self.get_contacts_rewards()
 
         r += rc1
@@ -147,10 +146,11 @@ class FightingEnv(gym.Env):
     def reset(self):
         self.model = mj.MjModel.from_xml_path(os.path.join(parentdir, self.filepath))
         self.data = mj.MjData(self.model)
-
+        mj.mj_step(self.model, self.data)
         self.timeCount = 0
         o1, o2 = self.get_observation()
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
+        self.fdist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
         self.z = self.data.body('torso').xpos[2]
         return np.concatenate([o1, o2], 0)
 
