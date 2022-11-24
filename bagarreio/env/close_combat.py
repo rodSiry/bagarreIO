@@ -55,7 +55,8 @@ class FightingEnv(gym.Env):
         #non-target parts
         ['wall1', 'wall2', 'wall3', 'wall4', 'floor']
 
-    def step(self, action1, action2):
+    #action1 = fighter1 action, action1 = fighter2 action, side = fighter from which we return state-reward info
+    def step(self, action1, action2, side=True):
         self.timeCount += 1
         end = 0
         r = 0
@@ -74,14 +75,18 @@ class FightingEnv(gym.Env):
         self.dist = new_dist
         self.z = self.data.body('torso').xpos[2]
 
-        rc1, _ = self.get_contacts_rewards()
+        rc1, rc2 = self.get_contacts_rewards()
 
-        r += rc1
 
         if self.timeCount == 1000:
             end = 1
 
-        return np.concatenate([o1, o2], 0), r, end, None
+        if side:
+            r += rc1
+            return np.concatenate([o1, o2], 0), r, end, None
+        else:
+            r += rc2
+            return np.concatenate([o2, o1], 0), r, end, None
 
     def get_contacts_rewards(self):
 
@@ -143,7 +148,8 @@ class FightingEnv(gym.Env):
         obs2 = np.concatenate([self.data.qpos[len(self.data.qpos)//2:] , self.data.qvel[len(self.data.qvel)//2:], self.data.body('2torso').xpos, self.data.body('2torso').xquat], axis=0)
         return obs1, obs2
 
-    def reset(self):
+    #side = fighter from which we return state-reward info
+    def reset(self, side=True):
         self.model = mj.MjModel.from_xml_path(os.path.join(parentdir, self.filepath))
         self.data = mj.MjData(self.model)
         mj.mj_step(self.model, self.data)
@@ -152,7 +158,11 @@ class FightingEnv(gym.Env):
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
         self.fdist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
         self.z = self.data.body('torso').xpos[2]
-        return np.concatenate([o1, o2], 0)
+
+        if side:
+            return np.concatenate([o1, o2], 0)
+        else:
+            return np.concatenate([o2, o1], 0)
 
     def render(self, cam_smoothness=0.99):
         if not self.render_init:
