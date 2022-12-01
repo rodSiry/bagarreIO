@@ -167,7 +167,7 @@ class FightingEnv(gym.Env):
         self.z = self.data.body('torso').xpos[2]
 
         #various episode observables that might be useful for diagnosis
-        self.env_stats  {}
+        self.env_stats = {}
         self.env_stats['exchanged_hitpower'] = 0
         self.env_stats['cumulated_reward_1'] = 0
         self.env_stats['cumulated_reward_2'] = 0
