@@ -81,6 +81,9 @@ class FightingEnv(gym.Env):
         if self.timeCount == 1000:
             end = 1
 
+        self.env_stats['cumulated_reward_1'] += r + rc1
+        self.env_stats['cumulated_reward_2'] += r + rc2
+
         if side:
             r += rc1
             return np.concatenate([o1, o2], 0), r, end, None
@@ -119,6 +122,7 @@ class FightingEnv(gym.Env):
                     force = self.data.efc_force[force_index]
                     r1 += force
                     r2 -= force
+                    self.env_stats['exchanged_hitpower'] += force
 
                 #hit parts are colored in red for clarity
                 self.model.geom_rgba[self.data.contact[k].geom1] = np.array(hit_color)
@@ -133,6 +137,7 @@ class FightingEnv(gym.Env):
                     force = self.data.efc_force[force_index]
                     r2 += force
                     r1 -= force
+                    self.env_stats['exchanged_hitpower'] += force
 
                 #hit parts are colored in red for clarity
                 self.model.geom_rgba[self.data.contact[k].geom1] = np.array(hit_color)
@@ -141,6 +146,8 @@ class FightingEnv(gym.Env):
 
 
         r1, r2 = r1 * self.hit_scale, r2 * self.hit_scale
+
+
         return r1, r2
 
     def get_observation(self):
@@ -158,6 +165,13 @@ class FightingEnv(gym.Env):
         self.dist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
         self.fdist = np.sum((self.data.body('torso').xpos - self.data.body('2torso').xpos) ** 2) ** 0.5
         self.z = self.data.body('torso').xpos[2]
+
+        #various episode observables that might be useful for diagnosis
+        self.env_stats  {}
+        self.env_stats['exchanged_hitpower'] = 0
+        self.env_stats['cumulated_reward_1'] = 0
+        self.env_stats['cumulated_reward_2'] = 0
+
 
         if side:
             return np.concatenate([o1, o2], 0)
